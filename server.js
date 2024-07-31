@@ -7,6 +7,9 @@ const localStrategy = require("passport-local").Strategy;
 const Person = require('./models/person');
 
 
+// Mongoose debug mode
+mongoose.set('debug', true);
+
 // connecting with DB
 const MONGO_URL="mongodb://127.0.0.1:27017/AuthAPI"; 
 
@@ -19,7 +22,12 @@ main()
     });
 
 async function main(){
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(MONGO_URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        serverSelectionTimeoutMS: 5000, // Increase to 5 seconds
+        socketTimeoutMS: 45000, // Increase to 45 seconds
+    });
 }
 
 // Middleware for parsing request body
